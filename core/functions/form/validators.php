@@ -160,3 +160,23 @@ function validate_url(string $field_value, array &$field): bool
 
     return true;
 }
+
+
+function validate_symbols_or_numbers(string $field_input, array &$field): bool
+{
+    if (!ctype_alpha($field_input)) {
+        $field['error'] = 'Input must be letters';
+        return false;
+    }
+    return true;
+}
+
+
+
+function validate_number_of_symbols(string $field_value, array &$field, array $params) {
+    if (strlen($field_value) > $params['max']) {
+        $field['error'] = 'Wish cant be so long';
+        return false;
+    }
+    return true;
+}

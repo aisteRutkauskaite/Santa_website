@@ -8,34 +8,68 @@ use Core\Views\Form;
 
 class AddForm extends Form
 {
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct([
             'attr' => [
                 'method' => 'POST',
             ],
             'fields' => [
-                'name' => [
-                    'label' => 'ITEM',
-                    'type' => 'text',
+                'option' => [
+                    'label' => 'OPTION',
+                    'type' => 'select',
+                    'options' => [
+                        'public' => 'Public',
+                        'not' => 'Not Public'
+                    ],
+                    'validators' => [
+                        'validate_select',
+                    ],
+                    'value' => 'public',
+                    'extra' => [
+                        'attr' => [
+                            'placeholder' => 'Enter your wish',
+                            'class' => 'input-field',
+                        ],
+                    ],
+                ],
+                'wish' => [
+                    'label' => 'Wish',
+                    'type' => 'textarea',
                     'validators' => [
                         'validate_field_not_empty',
+                        'validate_number_of_symbols' => [
+                            'max' => 200
+                        ]
                     ],
                     'extra' => [
                         'attr' => [
-                            'placeholder' => 'Enter item\'s name',
+                            'placeholder' => 'Enter your wish',
+                            'class' => 'input-field',
+                        ],
+                    ],
+                ],
+                'source' => [
+                    'label' => 'Where to buy?',
+                    'type' => 'text',
+                    'validators' => [
+                        ],
+                    'extra' => [
+                        'attr' => [
+                            'placeholder' => 'Enter source where to buy',
                             'class' => 'input-field',
                         ],
                     ],
                 ],
                 'price' => [
-                    'label' => 'PRICE',
+                    'label' => 'PRICE OF WISH',
                     'type' => 'text',
                     'validators' => [
                         'validate_field_not_empty',
                         'validate_numeric',
                         'validate_field_range' => [
                             'min' => 1,
-                            'max' => 9999,
+                            'max' => 100,
                         ]
                     ],
                     'extra' => [
@@ -45,21 +79,8 @@ class AddForm extends Form
                         ],
                     ],
                 ],
-                'image' => [
-                    'label' => 'IMAGE URL',
-                    'type' => 'text',
-                    'validators' => [
-                        'validate_field_not_empty',
-                        'validate_url',
-                    ],
-                    'extra' => [
-                        'attr' => [
-                            'placeholder' => 'Enter item\'s image URL',
-                            'class' => 'input-field',
-                        ],
-                    ],
-                ],
             ],
+
             'buttons' => [
                 'send' => [
                     'title' => 'ADD',

@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Abstracts\Controller;
 use App\App;
 use App\Views\BasePage;
+use App\Views\Forms\LoginForm;
 use App\Views\Navigation;
 use Core\View;
 
@@ -27,6 +28,9 @@ class HomeController extends Controller
      */
     public function __construct()
     {
+        $this->page = new BasePage([
+            'title' => 'Wishes'
+        ]);
     }
 
     /**
@@ -61,10 +65,21 @@ class HomeController extends Controller
         } else {
             $h3 = 'Jus neprisijunges';
         }
+
+        if (isset($_POST['id'])) {
+            $rows = App::$db->getRowsWhere('wishes');
+            foreach ($rows ?? [] as $key => $wish) {
+                if ($key == $_POST['id']) {
+                    $wish['fulfilled'] = 'true';
+                    App::$db->updateRow('wishes', $key, $wish);
+                }
+            }
+        }
+
         $content = new View([
-            'tittle' => 'Welcome',
+            'tittle' => 'Wishes',
             'heading' => $h3,
-            'products' => App::$db->getRowsWhere('items'),
+            'wishes' => App::$db->getRowsWhere('wishes'),
         ]);
 
         $page = new BasePage([
@@ -76,4 +91,5 @@ class HomeController extends Controller
         // TODO: Implement index() method.
     }
 }
+
 

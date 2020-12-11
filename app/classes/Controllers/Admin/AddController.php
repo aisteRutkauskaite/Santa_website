@@ -14,6 +14,7 @@ class AddController extends AuthController
 {
     protected $form;
     protected $page;
+
     public function __construct()
     {
         parent::__construct();
@@ -22,14 +23,26 @@ class AddController extends AuthController
             'title' => 'ADD'
         ]);
     }
+
     public function index()
     {
         if ($this->form->validate()) {
             $clean_inputs = $this->form->values();
-            $email  = $_SESSION['email'] ;
-            $items = App::$db->insertRow('items', $clean_inputs);
-            header('Location: /index.php');
-            exit();
+            $wishes = App::$db->getRowsWhere('wishes');
+            $wish_count = 0;
+
+            foreach ($wishes as $wish) {
+                if ($_SESSION['email'] === $wish['email']) {
+                    $wish_count++;
+                }
+            }
+
+            if ($wish_count < 3) {
+                App::$db->insertRow('wishes', $clean_inputs + [
+                        'email' => $_SESSION['email'],
+                        'fulfilled' => 'false'
+                    ]);
+            }
         }
         $this->page->setContent($this->form->render());
         return $this->page->render();

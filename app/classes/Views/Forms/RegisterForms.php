@@ -15,6 +15,34 @@ class RegisterForms extends Form
                 'method' => 'POST',
             ],
             'fields' => [
+                'name' => [
+                    'label' => 'NAME',
+                    'type' => 'text',
+                    'validators' => [
+                        'validate_field_not_empty',
+                        'validate_symbols_or_numbers',
+                    ],
+                    'extra' => [
+                        'attr' => [
+                            'placeholder' => 'Enter your name',
+                            'class' => 'input-field',
+                        ]
+                    ]
+                ],
+                'last_name' => [
+                    'label' => 'LAST NAME',
+                    'type' => 'text',
+                    'validators' => [
+                        'validate_field_not_empty',
+                        'validate_symbols_or_numbers',
+                    ],
+                    'extra' => [
+                        'attr' => [
+                            'placeholder' => 'Enter your lastname',
+                            'class' => 'input-field',
+                        ]
+                    ]
+                ],
                 'email' => [
                     'label' => 'EMAIL',
                     'type' => 'text',

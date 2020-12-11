@@ -9,62 +9,41 @@ use App\Controllers\Base\AuthController;
 use App\Views\BasePage;
 use App\Views\Forms\Admin\AddForm;
 use App\Views\Forms\Admin\DeleteForm;
+use App\Views\Tables\Admin\ProductsTable;
 use Core\Views\Form;
 use Core\Views\Link;
 use Core\Views\Table;
 
 class ListController extends AuthController
 {
-    protected $page;
-    protected $link;
-    protected $table;
+    protected DeleteForm $form;
+    protected BasePage $page;
+
+
 
     public function __construct()
     {
         parent::__construct();
+        $this->form = new DeleteForm();
         $this->page = new BasePage([
-            'title' => 'LIST'
+            'title' => 'Wishes list'
         ]);
     }
 
-    public function index()
+    public function editList()
     {
-
         if (Form::action()) {
-            $deleteForm = new DeleteForm();
 
-            if ($deleteForm->validate()) {
-                $clean_inputs = $deleteForm->values();
+            if ($this->form->validate()) {
+                $clean_inputs = $this->form->values();
 
-                App::$db->deleteRow('items', $clean_inputs['row_id']);
+                App::$db->deleteRow('wishes', $clean_inputs['row_id']);
             }
         }
-        $rows = App::$db->getRowsWhere('items');
 
-        foreach ($rows as $id => $row) {
-            $this->link = new Link([
-                'link' => "/admin/edit.php?id={$id}",
-                'text' => 'Edit'
-            ]);
+        $table = new ProductsTable();
 
-            $rows[$id]['link'] = $this->link->render();
-
-            $deleteForm = new DeleteForm($id);
-            $rows[$id]['delete'] = $deleteForm->render();
-        }
-
-        $this->table = new Table([
-            'headers' => [
-                'Item',
-                'Price',
-                'Image url',
-                'Description',
-                'Options'
-            ],
-            'rows' => $rows
-        ]);
-
-        $this->page->setContent($this->table->render());
+        $this->page->setContent($table->render());
         return $this->page->render();
     }
 }

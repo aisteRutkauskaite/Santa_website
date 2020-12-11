@@ -82,4 +82,5 @@ class Session
             header("Location: $redirect");
         }
     }
+
 }

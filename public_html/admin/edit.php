@@ -6,7 +6,7 @@ use App\Controllers\Admin\EditController;
 require '../../bootloader.php';
 
 $controller = new EditController();
-print $controller->index();
+print $controller->edit();
 
 
 

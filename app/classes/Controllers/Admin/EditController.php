@@ -11,8 +11,8 @@ use App\Views\Forms\Admin\AddForm;
 
 class EditController extends AuthController
 {
-    protected $form;
-    protected $page;
+    protected AddForm $form;
+    protected BasePage $page;
 
     public function __construct()
     {
@@ -22,17 +22,17 @@ class EditController extends AuthController
             'title' => 'Edit'
         ]);
     }
-    public function index()
+    public function edit()
     {
         $row_id = $_GET['id'] ?? null;
         if ($row_id === null) {
             header("Location: /admin/list.php");
             exit();
         }
-        $this->form->fill(App::$db->getRowById('items', $row_id));
+//
         if ($this->form->validate()) {
             $clean_inputs = $this->form->values();
-            App::$db->updateRow('items', $row_id, $clean_inputs);
+            App::$db->updateRow('wishes', $row_id, $clean_inputs);
             header('Location: /index.php');
             exit();
         }

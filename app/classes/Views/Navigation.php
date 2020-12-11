@@ -21,18 +21,26 @@ class Navigation extends View
 
     public function generate()
     {
-        $nav = ['Home' => '/index.php'];
-        if (App::$session->getUser()) {
-            return $nav + [
-                    'Add'  => '/admin/add.php',
-                    'List'=> '/admin/list.php',
-                     'Logout'=> '/logout.php',
+        $nav = ['All public wishes' => '/index.php'];
 
-                ];
+        if (App::$session->getUser()) {
+            if (App::$session->getUser()['email'] === 'santa@santa.lt') {
+
+                return $nav + [
+                        'Logout' => '/logout.php',
+                    ];
+            } else {
+                return $nav + [
+                        'Make a wish' => '/admin/add.php',
+                        'My wishes' => '/admin/list.php',
+                        'Logout' => '/logout.php',
+                    ];
+            }
         } else {
             return $nav + [
                     'Register' => '/register.php',
                     'Login' => '/login.php',
+                    'About' => '/about.php',
                 ];
         }
     }
